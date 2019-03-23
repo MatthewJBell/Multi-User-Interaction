@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Multi_User_Interaction</title>
+        <script src="js/aframe-v0.8.2.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            let socket = io();
+
+            //default connect event
+            socket.on('connect', function() {
+                console.log("connected!");
+            });
+
+            socket.on('turnOn', function() {
+                //create rgb color string for css
+                let object = document.getElementById('lamp')
+                console.log("ON received");
+
+                //set background color with received color
+                // object.material = "emissive:#fd0d06;emissiveIntensity:2";
+                object.setAttribute('material', {emissive: '#fd0d06', emissiveIntensity: 10});
+
+            });
+
+            socket.on('turnOff', function() {
+                //create rgb color string for css
+                let object = document.getElementById('lamp')
+                console.log("OFF received");
+
+                //set background color with received color
+                object.setAttribute('material', {emissive: '#fd0d06', emissiveIntensity: 0});
+            });
+        </script>
+    </head>
+    <body>
+        <a-scene>
+            <a-assets>
+                <img id="skymap" src="assets/starfield.png" />
+                
+            </a-assets>
+
+            <!---------------- CAMERA ---------------->
+            <a-entity id="cameraRig" position="0 2 0" rotation="0 0 0">
+                <a-entity id="cursor" cursor="rayOrigin: mouse" position="0 0 -1"></a-entity>
+            </a-entity>
+
+            <!---------------- LIGHTING ---------------->
+            <a-light type="point" color="lightblue" position="4 60 26.680" intensity="0.2"></a-light>
+            <a-light type="point" color="#bc92ff" position="0 60 -60" intensity="0.1"></a-light>
+
+            <!-- SKYBOX -->
+            <a-entity   
+                id="sky"
+                rotation="0 0 0"
+                geometry="primitive: sphere; radius: 4000"
+                material="shader: flat; src: #skymap; side: back; fog: false;"
+                loadscripts>
+            </a-entity>
+
+            <a-sphere id="lamp" geometry="primitve: sphere; radius: 1" position="0 2 -5" color="white" material="emissive:#fd0d06;emissiveIntensity:10"></a-sphere>
+            
+            <a-plane id="ground" geometry="primitive: circle; radius: 10" position="0 1 0" width="30" height="30" rotation="-90 0 0" color="black" shadow></a-plane>            
+            
+        </a-scene>
+        
+    </body>
+</html>

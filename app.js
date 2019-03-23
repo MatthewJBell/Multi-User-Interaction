@@ -28,20 +28,16 @@ socketIO.on('connection', function(socket) {
     //custom events
     //socket = one client
     //socketIO.sockets = all clients
-    socket.on('red', function(data) {
-        console.log('red event heard');
-        socketIO.sockets.emit('color_change', {r:255, g:0, b:0});
+    socket.on('on', function(data) {
+        console.log('on event heard');
+        socketIO.sockets.emit('turnOn');
     });
 
-    socket.on('green', function(data) {
-        console.log('green event heard');
-        socketIO.sockets.emit('color_change', {r:0, g:255, b:0});
+    socket.on('off', function(data) {
+        console.log('off event heard');
+        socketIO.sockets.emit('turnOff');
     });
 
-    socket.on('blue', function(data) {
-        console.log('blue event heard');
-        socketIO.sockets.emit('color_change', {r:0, g:0, b:255});
-    });
 });
 
 //finally, start server
